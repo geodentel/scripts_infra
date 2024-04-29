@@ -1,0 +1,39 @@
+#!/bin/bash
+
+modules=(
+	php
+	nginx
+	postgresql
+	perl
+)
+
+for module in "${modules[@]}"; do
+    if yum module list | grep -q "^$module" 2> /dev/null; then
+        echo "Disabling module $module..."
+        yum -qy module disable "$module" 2> /dev/null
+        echo "Module $module successfully disabled."
+    else
+        echo "Module $module does not exist or is already disabled."
+    fi
+done
+
+
+#!/bin/bash
+
+modules=(
+	php
+	nginx
+	postgresql
+	perl
+)
+
+for module in "${modules[@]}"; do
+    if yum module list | grep -q "^$module" 2> /dev/null; then
+        echo "Enabling module $module..."
+        yum -qy module enable "$module" 2> /dev/null
+        echo "Module $module successfully enabled."
+    else
+        echo "Module $module does not exist or is already enabled."
+    fi
+done
+

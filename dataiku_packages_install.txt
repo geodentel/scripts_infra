@@ -1,0 +1,92 @@
+#!/bin/bash
+
+set -x
+
+
+## Required sofware
+packages=(  
+# Base Dataiku Install  
+acl
+unzip
+zip
+libgomp
+libffi-devel
+gcc
+git
+libgfortran
+nginx-1.22.1-1.el8.ngx
+expat
+freetype
+unzip
+bzip2-devel
+libffi-devel
+zlib
+zlib-devel
+openssl-devel
+krb5-devel
+krb5-workstation
+krb5-libs
+postgresql15-15.5-1PGDG.rhel8
+postgresql15-server-15.6-1PGDG.rhel8
+glibc-langpack-en
+# Code Environments
+libjpeg-turbo-devel
+geos-devel
+gdal-devel
+udunits2-devel
+proj-devel
+graphviz-devel
+poppler-cpp-devel
+igraph-devel
+protobuf-devel
+jq-devel
+# Support for R
+R-core-devel
+libicu
+libicu-devel
+libcurl-devel
+openssl-devel
+libxml2-devel
+# Graphics export
+npm
+gtk3
+libXScrnSaver
+alsa-lib
+nss
+mesa-libgbm
+libX11-xcb
+# Python
+python39-3.9.16
+# Java 1.8
+java-1.8.0-openjdk
+)
+
+for package in "${packages[@]}"; do
+  if rpm -q "$package" > /dev/null; then
+    install_log+="\n$package is already installed."
+  else
+    yum install -y "$package"
+    if rpm -q "$package" > /dev/null; then
+      install_log+="\n$package successfully installed."
+    else
+      install_log+="\nFailed to install $package."
+    fi
+  fi
+done
+
+
+# Report installed packages
+echo -e "\nReport installed packages:$install_log"
+echo ""
+echo "State of SELinux:"
+echo "$(getenforce)"
+echo ""
+echo "Información detallada del firewall"
+firewall-cmd --list-all
+echo ""
+echo "Python versions installed:"
+python --version
+/usr/bin/python3.6 --version
+/usr/local/bin/python3.7 --version
+python3 -m pip --version
+echo " "
