@@ -1,0 +1,62 @@
+back up
+
+#!/bin/bash
+date=$(date +%Y-%m-%d-%H%M%S)
+backup_dest="/opt/bkp"
+source="/dataiku"
+tar -cvzpf $backup_dest/dataiku-bkp-$date.tar.gz $source
+
+restore tar 
+
+#!/bin/bash
+
+backup_dir="/opt/bkp"
+restore_dir="/dataiku"
+
+# search for recent backup
+latest_backup=$(ls -t $backup_dir/dataiku-bkp-*.tar.gz 2>/dev/null | head -n1)
+
+# Check if a backup file was found
+if [ -n "$latest_backup" ]; then
+    backup_file=$(basename "$latest_backup")
+    # Unzip the backup file to the restore directory
+    tar -xvzf "$latest_backup" --strip-components=1 -C "$restore_dir"
+    echo "Restoration completed since $backup_file."
+else
+    echo "No backups were found in $backup_dir."
+    exit 1
+fi
+
+
+#!/bin/bash
+date=$(date +%Y-%m-%d-%H%M%S)
+backup_dest="/opt/bkp"
+source="/dataiku"
+rsync -avh $source $backup_des-date
+
+
+#!/bin/bash
+date=$(date +%Y-%m-%d-%H%M%S)
+backup_dest="/opt/bkp"
+source="/dataiku"
+rsync -avh --copy-links $source $backup_des-date
+
+
+restore
+
+#!/bin/bash
+date=$(date +%Y-%m-%d-%H%M%S)
+backup_dest="/opt/bkp/backup-2024-04-30-190506/"
+source="/dataiku"
+rsync -avh $backup_des $source
+
+cuidado este borra el origen 
+
+#!/bin/bash
+date=$(date +%Y-%m-%d-%H%M%S)
+backup_dest="/opt/bkp/backup-2024-04-30-190506/"
+source="/dataiku/dataiku/"
+restore_dest="/dataiku/"
+
+rsync -avh --remove-source-files $source $restore_dest
+
